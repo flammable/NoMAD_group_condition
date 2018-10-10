@@ -41,7 +41,7 @@ plist_loc="${managedinstalldir}/ConditionalItems"
 nomad_groups=$(${defaults} read /Users/${last_user}/Library/Preferences/com.trusourcelabs.NoMAD.plist Groups)
 
 # write NoMAD groups to a plist
-${defaults} write "$plist_loc" "nomad_groups" -array "${nomad_groups[@]}"
+${defaults} write "$plist_loc" "nomad_groups" "${nomad_groups[@]}"
 
 # convert the plist from binary to xml
 ${plutil} -convert xml1 "$plist_loc".plist
