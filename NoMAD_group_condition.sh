@@ -26,24 +26,22 @@ plutil="/usr/bin/plutil"
 # determine the primary user of the computer
 last_user=$(${defaults} read /Library/Preferences/com.apple.loginwindow.plist lastUserName 2>/dev/null)
 
-# if user hasn't logged into NoMAD, bail
-last_nomad_user=$(${defaults} read /Users/${last_user}/Library/Preferences/com.trusourcelabs.NoMAD.plist LastUser)
-if [ ! "$last_nomad_user" ]; then 
-	exit 0
-fi
-
 # determine where to write the conditionals
 managedinstalldir="$(${defaults} read /Library/Preferences/ManagedInstalls ManagedInstallDir)"
 plist_loc="${managedinstalldir}/ConditionalItems"
 
 # determine NoMAD groups
-# already an array, so nothing fancy required
 nomad_groups=$(${defaults} read /Users/${last_user}/Library/Preferences/com.trusourcelabs.NoMAD.plist Groups)
+
+# if user has no NoMAD groups, bail
+if [ ! "${nomad_groups}" ]; then 
+	exit 0
+fi
 
 # write NoMAD groups to a plist
 ${defaults} write "$plist_loc" "nomad_groups" "${nomad_groups[@]}"
 
 # convert the plist from binary to xml
-${plutil} -convert xml1 "$plist_loc".plist
+${plutil} -convert xml1 "${plist_loc}".plist
 
 exit 0
