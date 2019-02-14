@@ -7,7 +7,6 @@
 # To have awesome_package install only when this user is a member of 
 # the 'awesome_users' AD group use the following condition:
 #
-# (case and diacritic insensitive)
 # <key>conditional_items</key>
 # 	<array>
 # 		<dict>
