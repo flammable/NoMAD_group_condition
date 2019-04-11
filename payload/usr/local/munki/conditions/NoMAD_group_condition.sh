@@ -19,18 +19,24 @@
 # 		</dict>
 # 	</array>
 
+awk="/usr/bin/awk"
 defaults="/usr/bin/defaults"
+last="/usr/bin/last"
 plutil="/usr/bin/plutil"
+sort="/usr/bin/sort"
+uniq="/usr/bin/uniq"
 
 # determine the primary user of the computer
-last_user=$(${defaults} read /Library/Preferences/com.apple.loginwindow.plist lastUserName 2>/dev/null)
+# borrowed from https://www.jamf.com/jamf-nation/feature-requests/3892/calculate-login-duration-and-primary-user-based-on-longest-login-duration#responseChild11481
+primary_user=$(${last} -t console | ${awk} '{print $1}' | ${sort} | ${uniq} -c | ${sort} -n | ${awk} 'END{print $NF}')
+# last_user=$(${defaults} read /Library/Preferences/com.apple.loginwindow.plist lastUserName 2>/dev/null)
 
 # determine where to write the conditionals
 managedinstalldir="$(${defaults} read /Library/Preferences/ManagedInstalls ManagedInstallDir)"
 plist_loc="${managedinstalldir}/ConditionalItems"
 
 # determine NoMAD groups
-nomad_groups=$(${defaults} read /Users/${last_user}/Library/Preferences/com.trusourcelabs.NoMAD.plist Groups)
+nomad_groups=$(${defaults} read /Users/${primary_user}/Library/Preferences/com.trusourcelabs.NoMAD.plist Groups)
 
 # if user has no NoMAD groups, bail
 if [ ! "${nomad_groups}" ]; then 

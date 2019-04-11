@@ -1,0 +1,7 @@
+.	40755	0/0
+./usr	40755	0/0
+./usr/local	40755	0/0
+./usr/local/munki	40755	0/0
+./usr/local/munki/conditions	40755	0/0
+./usr/local/munki/conditions/._NoMAD_group_condition.sh	100744	0/0	0	0
+./usr/local/munki/conditions/NoMAD_group_condition.sh	100744	0/0	1721	1287044099
